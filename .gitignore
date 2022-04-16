@@ -5,6 +5,9 @@
 !.gitignore
 !README.md
 !main.tf
+!instance_profie.tf
+!cw_agent_config.json
+!userdata.sh
 
 # ...even if they are in subdirectories
 !*/
