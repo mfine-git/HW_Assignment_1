@@ -63,6 +63,7 @@ resource "aws_ssm_parameter" "cw_agent" {
   name        = "/cloudwatch-agent/config"
   type        = "String"
   value       = file("cw_agent_config.json")
+  overwrite = true
 }
 
 resource "aws_cloudwatch_metric_alarm" "Iamup" {
