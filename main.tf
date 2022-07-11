@@ -49,7 +49,7 @@ resource "aws_instance" "this" {
   user_data            = local.userdata
   key_name             = "Toluna_Keys"
   vpc_security_group_ids = [aws_security_group.this.id]
-  subnet_id = aws_subnet.this.id
+#  subnet_id = aws_subnet.this.id
   tags                 = { Name = "EC2-with-cw-agent" }
     # Send special I'm up! metric after EC2 instance creation complete
     provisioner "local-exec" {
@@ -63,7 +63,6 @@ resource "aws_ssm_parameter" "cw_agent" {
   name        = "/cloudwatch-agent/config"
   type        = "String"
   value       = file("cw_agent_config.json")
-  overwrite = true
 }
 
 resource "aws_cloudwatch_metric_alarm" "Iamup" {
@@ -131,7 +130,7 @@ resource "aws_sns_topic_subscription" "aws_sns_topic_subscription" {
 # Set Firewall that limits ingress cidr_blocks and open SSH port only
 resource "aws_security_group" "this" {
   name        = "allow-all-sg"
-  vpc_id      = aws_vpc.this.id
+#  vpc_id      = aws_vpc.this.id
   ingress {
     description      = "security_group"
     from_port        = 22
@@ -147,23 +146,6 @@ resource "aws_security_group" "this" {
   }
   tags = {
     Name = "allow_ssh"
-  }
-}
-
-resource "aws_vpc" "this" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
-  tags = {
-    Name = "Toluna_VPC"
-  }
-}
-
-resource "aws_subnet" "this" {
-  vpc_id     = aws_vpc.this.id
-  cidr_block = "10.0.1.0/24"
-
-  tags = {
-    Name = "Toluna_Subnet"
   }
 }
 
